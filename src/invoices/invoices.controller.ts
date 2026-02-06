@@ -30,14 +30,6 @@ export class InvoicesController {
     return await this.invoicesService.findOne(id);
   }
 
-  @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateInvoiceDto: UpdateInvoiceDto,
-  ) {
-    return await this.invoicesService.update(id, updateInvoiceDto);
-  }
-
   @Delete(':id')
   async remove(@Param('id') id: string) {
     return await this.invoicesService.remove(id);
