@@ -57,6 +57,64 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+# 🚀 Docker
+
+## Development (`docker-compose.yml`)
+
+```bash
+# Levantar
+$ docker compose up -d
+
+# Bajar
+$ docker compose down
+```
+
+### Production (`docker-compose.prod.yml`)
+
+```bash
+# Levantar
+$ docker compose -f docker-compose.prod.yml up -d
+
+# Construir y levantar
+$ docker compose -f docker-compose.prod.yml up -d --build
+
+# Bajar
+$ docker compose -f docker-compose.prod.yml down
+```
+
+### Build and Push Docker Image
+
+```bash
+# Cargar variables
+$ source .env
+
+# Build con versión
+$ docker build -t <username>/<image-name>:v1.0.0 .
+
+# Tag como latest
+$ docker tag <username>/<image-name>:v1.0.0 <username>/<image-name>:latest
+
+# Push versión específica
+$ docker push <username>/<image-name>:v1.0.0
+
+# Push latest
+$ docker push <username>/<image-name>:latest
+```
+
+### Pull Docker Image
+
+```bash
+# Bajar versión específica
+$ docker pull <username>/<image-name>:v1.0.0
+```
+
+### Run Docker Imagen
+
+```bash
+# Ejecutar la imagen en el puerto 3000
+$ docker run -p 3000:3000 <username>/<image-name>:v1.0.0
+```
+
 ## Deployment
 
 When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
