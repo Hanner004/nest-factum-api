@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { Invoice } from '@/invoices/entities/invoice.entity';
 import { InvoiceItem } from '@/invoices/entities/invoiceItem.entity';
 import { CreateInvoiceDto } from './dto/create-invoice.dto';
@@ -71,6 +71,7 @@ export class InvoicesService {
   async findAll() {
     return await this.invoicesRepository.find({
       relations: ['customer', 'company', 'items'],
+      withDeleted: true,
     });
   }
 
@@ -78,6 +79,7 @@ export class InvoicesService {
     const invoice = await this.invoicesRepository.findOne({
       where: { id },
       relations: ['customer', 'company', 'items'],
+      withDeleted: true,
     });
     if (!invoice) throw new NotFoundException('Invoice not found');
     return invoice;

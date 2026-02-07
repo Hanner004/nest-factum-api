@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Customer } from '@/customers/entities/customer.entity';
@@ -12,7 +16,22 @@ export class CustomersService {
     private customersRepository: Repository<Customer>,
   ) {}
 
+  private async ensureDocumentNumberIsUnique(
+    document_number: string,
+  ): Promise<void> {
+    const existingCustomer = await this.customersRepository.findOneBy({
+      document_number,
+    });
+    if (existingCustomer) {
+      throw new ConflictException(
+        'Customer with this document number already exists',
+      );
+    }
+  }
+
   async create(createCustomerDto: CreateCustomerDto) {
+    await this.ensureDocumentNumberIsUnique(createCustomerDto.document_number);
+
     const customer = this.customersRepository.create(createCustomerDto);
     return await this.customersRepository.save(customer);
   }
